@@ -324,6 +324,13 @@ JNIEXPORT jbyteArray JNICALL Java_com_breadwallet_core_BRCoreWallet_signMessage
 JNIEXPORT jbyteArray JNICALL Java_com_breadwallet_core_BRCoreWallet_verifyMessage
         (JNIEnv *, jobject, jbyteArray, jbyteArray);
 
+/*
+ * Class:     com_breadwallet_core_BRCoreWallet
+ * Method:    dumpPrivkey
+ */
+JNIEXPORT jstring JNICALL Java_com_breadwallet_core_BRCoreWallet_dumpPrivkey
+        (JNIEnv *, jobject, jbyteArray, jbyteArray);
+
 #ifdef __cplusplus
 }
 #endif

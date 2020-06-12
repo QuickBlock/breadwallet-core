@@ -318,6 +318,8 @@ public class BRCoreWallet extends BRCoreJniReference
 
     public native String verifyMessage (byte[] data, byte[] signature);
 
+    public native String dumpPrivkey (byte[] script, byte[] phrase);
+
     static { initializeNative(); }
 }
 

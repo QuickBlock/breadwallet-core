@@ -865,6 +865,36 @@ Java_com_breadwallet_core_BRCoreWallet_signMessage
 
 /*
  * Class:     com_breadwallet_core_BRCoreWallet
+ * Method:    signMessage
+ */
+JNIEXPORT jstring JNICALL
+Java_com_breadwallet_core_BRCoreWallet_dumpPrivkey
+        (JNIEnv *env, jobject thisObject,
+         jbyteArray scriptByteArray,
+         jbyteArray phraseByteArray) {
+    BRWallet *wallet = (BRWallet *) getJNIReference(env, thisObject);
+
+    size_t phraseLen = (size_t) (*env)->GetArrayLength(env, phraseByteArray);
+    const jbyte *phraseBytes = (const jbyte *) (*env)->GetByteArrayElements(env, phraseByteArray, 0);
+
+    char phrase [1 + phraseLen];
+    memcpy (phrase, phraseBytes, phraseLen);
+    phrase[phraseLen] = '\0';
+
+    UInt512 seed;
+    BRBIP39DeriveKey (&seed, phrase, NULL);
+
+    uint8_t *script = (uint8_t *) (*env)->GetByteArrayElements(env, scriptByteArray, 0);
+    size_t scriptLen = (size_t) (*env)->GetArrayLength(env, scriptByteArray);
+
+    BRKey *key = BRWalletFindKey(wallet, script, scriptLen, &seed, sizeof(seed));
+    jstring result = (*env)->NewStringUTF(env, u256hex(key->secret));
+
+    return result;
+}
+
+/*
+ * Class:     com_breadwallet_core_BRCoreWallet
  * Method:    verifyMessage
  */
 JNIEXPORT jstring JNICALL
